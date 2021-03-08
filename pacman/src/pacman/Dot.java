@@ -6,11 +6,15 @@ package pacman;
  * @immutable
  * 
  * @invar | getSquare() != null
+ * @invar | getSquare().isPassable() == true
  */
 public class Dot {
 	
-	/** @invar | square != null */
-	private Square square;
+	/** @invar | square != null 
+	 *  @invar | square.isPassable() == true
+	 *  @representationObject
+	 */
+	private final Square square;
 	
 	/** @basic */
 	public Square getSquare() { return square; }
@@ -19,12 +23,16 @@ public class Dot {
 	 * Constructor of Dot objects
 	 * 
 	 * @throws IllegalArgumentException | square == null
+ 	 * @throws IllegalArgumentException | square.isPassable() == false
 	 * 
 	 * @post | getSquare().equals(square)
 	 */
 	public Dot(Square square) { 
 		if (square == null)
 			throw new IllegalArgumentException("given square is null");
+		if (square.isPassable() == false)
+			throw new IllegalArgumentException("given square is not passable");
+		
 		this.square = square;
 
 	}

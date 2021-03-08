@@ -7,6 +7,10 @@ import java.util.stream.IntStream;
  * and, for each position in the maze, whether it is passable or not.
  * 
  * @immutable
+ * 
+ * @invar | 0 < getWidth()
+ * @invar | 0 < getHeight()
+ * @invar All rows of the objects of this class are of the same length
  */
 public class MazeMap {
 	
@@ -16,10 +20,10 @@ public class MazeMap {
 	 * @invar | map != null
 	 * @invar | map.length == nbRows * nbColumns
 	 */
-	private int nbColumns;
-	private int nbRows;
+	private final int nbColumns;
+	private final int nbRows;
 	/** @representationObject */
-	private boolean[] map;
+	private final boolean[] map;
 
 	/**
 	 * Returns the width (i.e. the number of columns) of this maze map.

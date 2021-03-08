@@ -9,6 +9,10 @@ import java.util.Set;
  * The top row and the leftmost column have index 0.
  * 
  * @immutable
+ * 
+ * @invar | 0 <= getRowIndex() && getRowIndex() < getMazeMap().getHeight()
+ * @invar | 0 <= getColumnIndex() && getColumnIndex() < getMazeMap().getWidth()
+ * @invar | getMazeMap() != null
  */
 public class Square {
 	/**
@@ -16,10 +20,10 @@ public class Square {
 	 * @invar | 0 <= columnIndex && columnIndex < mazeMap.getWidth()
 	 * @invar | mazeMap != null
 	 */
-	private int rowIndex;
-	private int columnIndex;
+	private final int rowIndex;
+	private final int columnIndex;
 	/** @representationObject */
-	private MazeMap mazeMap;
+	private final MazeMap mazeMap;
 	
 
 	/** @basic */
@@ -37,12 +41,17 @@ public class Square {
 		return columnIndex;
 	}
 	
+	/**
+	 * @post | result == getMazeMap().isPassable(getRowIndex(), getColumnIndex())
+	 */
 	public boolean isPassable() { 
-		return mazeMap.isPassable(rowIndex, columnIndex);
+		return getMazeMap().isPassable(getRowIndex(), getColumnIndex());
 	}
 	
 	/**
 	 * Returns the Square object on the given map in the given position.
+	 * 
+	 * @inspects | mazeMap
 	 * 
 	 * @throws IllegalArgumentException if the given {@code mazeMap} object is null.
 	 * 		| mazeMap == null
@@ -127,6 +136,7 @@ public class Square {
 	 * Returns whether the given square refers to the same {@code MazeMap} object and has the same row and column index as this square.  
 	 * 
 	 * @inspects | this
+	 * @inspects | other
 	 * @throws  IllegalArgumentException if {@code other} is null
 	 * 		| other == null
 	 */

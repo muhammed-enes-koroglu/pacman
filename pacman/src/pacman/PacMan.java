@@ -6,12 +6,14 @@ package pacman;
  * @mutable
  * 
  * @invar | getSquare() != null
+ * @invar | getSquare().isPassable() == true
  * @invar | getNbLives() >= 0
  */
 public class PacMan {
 	
 	/**
 	 * @invar | square != null
+	 * @invar | square.isPassable() == true
 	 * @invar | nbLives >= 0
 	 */
 	private int nbLives;
@@ -33,6 +35,8 @@ public class PacMan {
 	 * 		| nbLives <= 0
 	 * @throws IllegalArgumentException if the given {@code square} is null
 	 * 		| square == null
+	 * @throws IllegalArgumentException if the given {@code square} is not passable
+	 * 		| square.isPassable() == false
 	 * 
 	 * @post | getSquare().equals(square)
 	 * @post | getNbLives() == nbLives
@@ -42,6 +46,8 @@ public class PacMan {
 			throw new IllegalArgumentException("Given number of lives must be greater than zero");
 		if (square == null)
 			throw new IllegalArgumentException("given square is null");
+		if (square.isPassable() == false)
+			throw new IllegalArgumentException("given square is not passable");
 
 		this.nbLives = nbLives;
 		this.square = square;
@@ -51,12 +57,15 @@ public class PacMan {
 	 * @mutates | this
 	 * 
 	 * @throws IllegalArgumentException | square == null
+	 * @throws IllegalArgumentException | square.isPassable() == false
 	 * 
 	 * @post | getSquare().equals(square)
 	 */
 	public void setSquare(Square square) { 
 		if (square == null)
 			throw new IllegalArgumentException("given square is null");
+		if (square.isPassable() == false)
+			throw new IllegalArgumentException("given square is not passable");
 		
 		this.square = square;
 	}

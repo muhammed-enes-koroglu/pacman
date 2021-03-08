@@ -1,6 +1,8 @@
 package pacman;
 
 import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * Each instance of this class represents a position in a maze, specified by a row index and a column index.
@@ -10,32 +12,27 @@ import java.util.Arrays;
  */
 public class Square {
 	/**
-	 * @invar | 0 <= rowIndex && rowIndex < maze.getHeight()
-	 * @invar | 0 <= columnIndex && columnIndex < maze.getWidth()
-	 * @invar | maze != null
+	 * @invar | 0 <= rowIndex && rowIndex < mazeMap.getHeight()
+	 * @invar | 0 <= columnIndex && columnIndex < mazeMap.getWidth()
+	 * @invar | mazeMap != null
 	 */
 	private int rowIndex;
 	private int columnIndex;
 	/** @representationObject */
 	private MazeMap mazeMap;
 	
-	/**
-	 * @basic
-	 */
+
+	/** @basic */
 	public MazeMap getMazeMap() { 
 		return mazeMap;
 	}
-	
-	/**
-	 * @basic
-	 */	
+
+	/** @basic */
 	public int getRowIndex() {
 		return rowIndex;
 	}
-	
-	/**
-	 * @basic
-	 */
+
+	/** @basic */
 	public int getColumnIndex() { 
 		return columnIndex;
 	}
@@ -45,7 +42,7 @@ public class Square {
 	}
 	
 	/**
-	 * Serves as a constructor.
+	 * Returns the Square object on the given map in the given position.
 	 * 
 	 * @throws IllegalArgumentException if the given {@code mazeMap} object is null.
 	 * 		| mazeMap == null
@@ -54,21 +51,19 @@ public class Square {
 	 * @throws IllegalArgumentException if the given {@code columnIndex} is not within boundaries.
 	 * 		|  !(0 <= columnIndex && columnIndex < mazeMap.getWidth())
 	 * 
-	 * @post | equals(mazeMap, getMazeMap())
-	 * @post | isPassable() == mazeMap.isPassable(rowIndex, columnIndex)
-	 * @post | getRowIndex() == rowIndex
-	 * @post | getColumnIndex() == columnIndex
+	 * @post | mazeMap.equals(result.getMazeMap())
+	 * @post | result.isPassable() == mazeMap.isPassable(rowIndex, columnIndex)
+	 * @post | result.getRowIndex() == rowIndex
+	 * @post | result.getColumnIndex() == columnIndex
 	 */
 	public static Square of(MazeMap mazeMap, int rowIndex, int columnIndex) {
 		if (mazeMap == null)
 			throw new IllegalArgumentException("given mazeMap is null");
-		if (!(0 <= rowIndex && rowIndex < mazeMap.getHeight()))
+		if (!(0 <= rowIndex && rowIndex < mazeMap.getHeight())) 
 			throw new IllegalArgumentException("given rowIndex is out of bounds");
 		if (!(0 <= columnIndex && columnIndex < mazeMap.getWidth()))
 			throw new IllegalArgumentException("given columnIndex is out of bounds");
-		
-		return new Square(mazeMap, rowIndex, columnIndex);
-		
+		return new Square(mazeMap, rowIndex, columnIndex);		
 	}
 	
 	private Square(MazeMap mazeMap, int rowIndex, int columnIndex) {
@@ -90,9 +85,9 @@ public class Square {
 		if (direction == Direction.LEFT)
 			return of(this.mazeMap, this.rowIndex, Math.floorMod(this.columnIndex - 1, mazeMap.getWidth()));
 		if (direction == Direction.UP)
-			return of(this.mazeMap, Math.floorMod(this.rowIndex + 1, mazeMap.getHeight()),this.columnIndex);
-		if (direction == Direction.DOWN)
 			return of(this.mazeMap, Math.floorMod(this.rowIndex - 1, mazeMap.getHeight()),this.columnIndex);
+		if (direction == Direction.DOWN)
+			return of(this.mazeMap, Math.floorMod(this.rowIndex + 1, mazeMap.getHeight()),this.columnIndex);
 		else 
 			throw new IllegalArgumentException("the given direction is null");
 	}
@@ -117,21 +112,21 @@ public class Square {
 	public Direction[] getPassableDirectionsExcept(Direction excludedDirection) {
 		if (excludedDirection == null)
 			throw new IllegalArgumentException("the given direction is null");
-
+		
 		Direction[] directions = {Direction.RIGHT, Direction.LEFT, Direction.UP, Direction.DOWN};
-		Direction[] passableDirections = {};
-		for(Direction dir : directions) {
+		Set<Direction> passableDirections = new HashSet<>();
+		for(int i = 0; i< directions.length; i++) {
+			Direction dir = directions[i];
 			if (dir != excludedDirection && canMove(dir))
-				passableDirections = Arrays.copyOf(passableDirections, passableDirections.length + 1);
-				passableDirections[passableDirections.length - 1] = dir;
+				passableDirections.add(dir);
 		}
-		return passableDirections;
+		return passableDirections.toArray(new Direction[passableDirections.size()]);
 	}
 	
 	/**
 	 * Returns whether the given square refers to the same {@code MazeMap} object and has the same row and column index as this square.  
 	 * 
-	 * @inspects this
+	 * @inspects | this
 	 * @throws  IllegalArgumentException if {@code other} is null
 	 * 		| other == null
 	 */
@@ -142,4 +137,7 @@ public class Square {
 				(this.columnIndex == other.columnIndex);
 	}
 	
+	public String toString() {
+		return "Square: " + getRowIndex() + " " + getColumnIndex();
+	}
 }

@@ -2,11 +2,31 @@ package pacman;
 
 /**
  * Each instance of this class represents a dot (a piece of food for Pac-Man) in a Pac-Man maze.
+ * 
+ * @immutable
+ * 
+ * @invar | getSquare() != null
  */
 public class Dot {
 	
-	public Square getSquare() { throw new RuntimeException("Not yet implemented"); }
+	/** @invar | square != null */
+	private Square square;
 	
-	public Dot(Square square) { throw new RuntimeException("Not yet implemented"); }
+	/** @basic */
+	public Square getSquare() { return square; }
+	
+	/**
+	 * Constructor of Dot objects
+	 * 
+	 * @throws IllegalArgumentException | square == null
+	 * 
+	 * @post | getSquare().equals(square)
+	 */
+	public Dot(Square square) { 
+		if (square == null)
+			throw new IllegalArgumentException("given square is null");
+		this.square = square;
+
+	}
 
 }

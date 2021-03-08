@@ -29,6 +29,7 @@ class PacManTest {
 		pacman.die();
 		assert(pacman.getNbLives() == lives - 1);
 		
+		System.out.println("sdfasdf");
 	}
 
 }

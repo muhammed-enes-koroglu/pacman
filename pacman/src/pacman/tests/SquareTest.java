@@ -44,7 +44,7 @@ class SquareTest {
 		
         assertFalse(s1.equals(s2));
         assert(s1.equals(s1));
-        assert(s1.equals(Square.of(map, 1, 2)));
+        assert(s1.equals(Square.of(map, 1, 1)));
         MazeMap map2 = new MazeMap(mapColumns, mapRows, passable);
         assertFalse(s1.equals(Square.of(map2, 1, 2)));
 		

@@ -5,6 +5,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.Test;
 
 import pacman.MazeMap;
+import pacman.Square;
 
 class MazeMapTest {
 
@@ -14,15 +15,18 @@ class MazeMapTest {
 		boolean[] passable = {false, false, true, false,
 							  false, false, true, true,
 							  false, false, false, true};
-		MazeMap map = new MazeMap(4, 3, passable);
-		assert(map.getWidth() == 4);
-		assert(map.getHeight() == 3);
-		assert(map.isPassable(0, 0) == false);
-		assert(map.isPassable(1, 0) == false);
-		assert(map.isPassable(2, 0) == false);
-		assert(map.isPassable(0, 2) == true);
-		assert(map.isPassable(1, 2) == true);
+		int mapCols = 4;
+		int mapRows = 3;
+		MazeMap map = new MazeMap(mapCols, mapRows, passable);
+		assert(map.getWidth() == mapCols);
+		assert(map.getHeight() == mapRows);
 		
+
+		for (int index = 0; index < passable.length; index++) {
+			int row = index / mapCols;
+			int col = index % mapCols;			
+			assert(map.isPassable(row, col) == passable[index]);
+		}
 		
 	}
 

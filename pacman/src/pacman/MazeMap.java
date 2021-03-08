@@ -1,5 +1,7 @@
 package pacman;
 
+import java.util.stream.IntStream;
+
 /**
  * Each instance of this class represents a maze layout, specifying the width and height of the maze
  * and, for each position in the maze, whether it is passable or not.
@@ -12,7 +14,7 @@ public class MazeMap {
 	 * @invar | nbColumns > 0
 	 * @invar | nbRows > 0
 	 * @invar | map != null
-	 * @invar | map.length = nbRows * nbColumns
+	 * @invar | map.length == nbRows * nbColumns
 	 */
 	private int nbColumns;
 	private int nbRows;
@@ -42,14 +44,14 @@ public class MazeMap {
 	 * The square in the top-left corner of the maze has row index 0 and column index 0.
 	 * 
 	 * @throws IllegalArgumentException if the given {@code rowIndex} is not between zero and {@code nbRows}
-	 * 		| !(0 < rowIndex && rowIndex <= nbRows)
+	 * 		| !(0 < rowIndex && rowIndex <= getHeight())
 	 * @throws IllegalArgumentException if the given {@code columnIndex} is not between zero and {@code nbColumns}
-	 * 		| !(0 < columnIndex && columnIndex <= nbColumns)
+	 * 		| !(0 < columnIndex && columnIndex <= getWidth())
 	 */
 	public boolean isPassable(int rowIndex, int columnIndex) { 
-		if (!(0 < rowIndex && rowIndex <= nbRows))
+		if (!(0 <= rowIndex && rowIndex <= nbRows)) 
 			throw new IllegalArgumentException("Illegal argument: rowIndex");
-		if (!(0 < columnIndex && columnIndex <= nbColumns))
+		if (!(0 <= columnIndex && columnIndex <= nbColumns))
 			throw new IllegalArgumentException("Illegal argument: columnIndex");
 		
 		return map[nbColumns * rowIndex + columnIndex];
@@ -71,7 +73,7 @@ public class MazeMap {
 	 * 
 	 * @post | getWidth() == width
 	 * @post | getHeight() == height
-	 * @post | IntStream.range(0,passable.length).allMatch(i -> passable[i] == isPassable(i / height, i % width))
+	 * @post | IntStream.range(0,passable.length).allMatch(i -> passable[i] == isPassable(i / width, i % width))
 	 */
 	public MazeMap(int width, int height, boolean[] passable) {
 		if (!(width > 0))

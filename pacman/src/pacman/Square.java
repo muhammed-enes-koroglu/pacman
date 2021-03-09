@@ -67,7 +67,7 @@ public class Square {
 	 */
 	public static Square of(MazeMap mazeMap, int rowIndex, int columnIndex) {
 		if (mazeMap == null)
-			throw new IllegalArgumentException("given mazeMap is null");
+			throw new IllegalArgumentException("given mazeMap may not be null");
 		if (!(0 <= rowIndex && rowIndex < mazeMap.getHeight())) 
 			throw new IllegalArgumentException("given rowIndex is out of bounds");
 		if (!(0 <= columnIndex && columnIndex < mazeMap.getWidth()))

@@ -51,6 +51,8 @@ public class MazeMap {
 	 * 		| !(0 < rowIndex && rowIndex <= getHeight())
 	 * @throws IllegalArgumentException if the given {@code columnIndex} is not between zero and {@code nbColumns}
 	 * 		| !(0 < columnIndex && columnIndex <= getWidth())
+	 * 
+	 * @inspects | this
 	 */
 	public boolean isPassable(int rowIndex, int columnIndex) { 
 		if (!(0 <= rowIndex && rowIndex <= nbRows)) 
@@ -74,6 +76,8 @@ public class MazeMap {
 	 * 		| passable == null
 	 * @throws IllegalArgumentException if the length of the given {@code passable} is not equal to width * height 
 	 * 		| !(passable.length == width * height)
+	 * 
+	 * @inspects | passable
 	 * 
 	 * @post | getWidth() == width
 	 * @post | getHeight() == height

@@ -54,10 +54,10 @@ public class PacMan {
 	}
 	
 	/**
-	 * @mutates | this
-	 * 
 	 * @throws IllegalArgumentException | square == null
 	 * @throws IllegalArgumentException | square.isPassable() == false
+	 *
+	 * @mutates | this
 	 * 
 	 * @post | getSquare().equals(square)
 	 */
@@ -73,10 +73,11 @@ public class PacMan {
 	/**
 	 * Decreases this Pac-Man character's number of lives by one.
 	 * 
+	 * @throws Exception | getNbLives() == 0
+	 * 
 	 * @inspects | this
 	 * @mutates | this
 	 * 
-	 * @throws Exception | getNbLives() == 0
 	 * @post | getNbLives() == old(getNbLives()) - 1
 	 * 
 	 */

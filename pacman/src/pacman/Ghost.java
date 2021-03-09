@@ -24,14 +24,18 @@ public class Ghost {
 	private Direction direction;
 	
 	/** @basic */
-	public Square getSquare() { return square; }
+	public Square getSquare() { 
+		return square; 
+	}
 	
 	/**
 	 * Returns the direction in which this ghost will preferably move next.
 	 * 
 	 * @basic
 	 */
-	public Direction getDirection() { return direction; }
+	public Direction getDirection() { 
+		return direction; 
+	}
 	
 	/**
 	 * @throws IllegalArgumentException | square == null
@@ -57,6 +61,8 @@ public class Ghost {
 	 * @throws IllegalArgumentException | square == null
 	 * @throws IllegalArgumentException | square.isPassable() == false
 	 * 
+	 * @mutates | this 
+	 * 
 	 * @post | getSquare().equals(square)
 	 */
 	public void setSquare(Square square) { 
@@ -70,6 +76,8 @@ public class Ghost {
 	
 	/**
 	 * @throws IllegalArgumentException | direction == null
+	 * 
+	 * @mutates | this
 	 * 
 	 * @post | getDirection() == direction
 	 */

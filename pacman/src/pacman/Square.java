@@ -60,6 +60,8 @@ public class Square {
 	 * @throws IllegalArgumentException if the given {@code columnIndex} is not within boundaries.
 	 * 		|  !(0 <= columnIndex && columnIndex < mazeMap.getWidth())
 	 * 
+	 * @creates | result
+	 * 
 	 * @post | mazeMap.equals(result.getMazeMap())
 	 * @post | result.isPassable() == mazeMap.isPassable(rowIndex, columnIndex)
 	 * @post | result.getRowIndex() == rowIndex
@@ -135,10 +137,11 @@ public class Square {
 	/**
 	 * Returns whether the given square refers to the same {@code MazeMap} object and has the same row and column index as this square.  
 	 * 
-	 * @inspects | this
-	 * @inspects | other
 	 * @throws  IllegalArgumentException if {@code other} is null
 	 * 		| other == null
+	 * 
+	 * @inspects | this
+	 * @inspects | other
 	 */
 	public boolean equals(Square other) {
 		if (other == null)
@@ -147,6 +150,9 @@ public class Square {
 				(this.columnIndex == other.columnIndex);
 	}
 	
+	/**
+	 * @inspects | this
+	 */
 	public String toString() {
 		return "Square: " + getRowIndex() + " " + getColumnIndex();
 	}

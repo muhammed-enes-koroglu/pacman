@@ -1,90 +1,77 @@
 package pacman;
 
 /**
- * Each instance of this class represents the player-controlled Pac-Man character in a Pac-Man maze.
+ * Each instance of this class represents the Pac-Man character in a Pac-Man maze.
  * 
- * @mutable
- * 
+ * @invar | 0 <= getNbLives()
  * @invar | getSquare() != null
- * @invar | getSquare().isPassable() == true
- * @invar | getNbLives() >= 0
  */
 public class PacMan {
 	
 	/**
-	 * @invar | square != null
-	 * @invar | square.isPassable() == true
-	 * @invar | nbLives >= 0
+	 * @invar | 0 <= nbLives
+	 * @invar | square != null 
 	 */
 	private int nbLives;
-	/** @representationObject */
 	private Square square;
 	
-	/** @basic */	
-	public Square getSquare() { 
-		return square;
-	}
-	
-	/** @basic */
-	public int getNbLives() { 
+	/**
+	 * @basic
+	 */
+	public int getNbLives() {
 		return nbLives;
 	}
+	
+	/**
+	 * @basic
+	 */
+	public Square getSquare() { return square; }
 
 	/**
-	 * @throws IllegalArgumentException if the given {@code nbLives} not greater than zero
-	 * 		| nbLives <= 0
-	 * @throws IllegalArgumentException if the given {@code square} is null
-	 * 		| square == null
-	 * @throws IllegalArgumentException if the given {@code square} is not passable
-	 * 		| square.isPassable() == false
+	 * Initializes this object so that its initial position is the
+	 * given square and its initial number of lives equals the given
+	 * number of lives.
 	 * 
-	 * @post | getSquare().equals(square)
+	 * @throws | nbLives < 0
+	 * @throws | square == null
+	 * 
 	 * @post | getNbLives() == nbLives
+	 * @post | getSquare() == square
 	 */
 	public PacMan(int nbLives, Square square) {
-		if (nbLives <= 0)
-			throw new IllegalArgumentException("Given number of lives must be greater than zero");
-		if (square == null)
-			throw new IllegalArgumentException("given square is null");
-		if (square.isPassable() == false)
-			throw new IllegalArgumentException("given square is not passable");
-
 		this.nbLives = nbLives;
 		this.square = square;
 	}
 	
 	/**
+	 * Sets this object's position.
+	 * 
 	 * @throws IllegalArgumentException | square == null
-	 * @throws IllegalArgumentException | square.isPassable() == false
-	 *
+	 * 
 	 * @mutates | this
 	 * 
-	 * @post | getSquare().equals(square)
+	 * @post | getSquare() == square
+	 * @post | getNbLives() == old(getNbLives()) 
 	 */
-	public void setSquare(Square square) { 
-		if (square == null)
-			throw new IllegalArgumentException("given square is null");
-		if (square.isPassable() == false)
-			throw new IllegalArgumentException("given square is not passable");
-		
+	public void setSquare(Square square) {
 		this.square = square;
 	}
 	
 	/**
-	 * Decreases this Pac-Man character's number of lives by one.
+	 * Decreases this object's number of lives.
 	 * 
-	 * @throws Exception | getNbLives() == 0
+	 * @throws IllegalStateException | getNbLives() == 0
 	 * 
-	 * @inspects | this
 	 * @mutates | this
 	 * 
 	 * @post | getNbLives() == old(getNbLives()) - 1
-	 * 
+	 * @post | getSquare() == old(getSquare())
 	 */
-	public void die() { 
-		if (getNbLives() == 0)
-			throw new IllegalArgumentException("Number of lives is already zero");
-		nbLives--;
+	public void die() {
+		if (nbLives == 0)
+			throw new IllegalStateException("no lives left");
+		
+		this.nbLives--;
 	}
 
 }

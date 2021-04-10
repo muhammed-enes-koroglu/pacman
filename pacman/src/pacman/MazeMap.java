@@ -6,61 +6,65 @@ import java.util.stream.IntStream;
  * Each instance of this class represents a maze layout, specifying the width and height of the maze
  * and, for each position in the maze, whether it is passable or not.
  * 
- * @immutable
+ * @invar | 0 <= getWidth()
+ * @invar | 0 <= getHeight()
  * 
- * @invar | 0 < getWidth()
- * @invar | 0 < getHeight()
- * @invar All rows of the objects of this class are of the same length
+ * @immutable
  */
 public class MazeMap {
+
+	/**
+	 * @invar | 0 <= width
+	 * @invar | 0 <= height
+	 * @invar | passable != null
+	 * @invar | passable.length == width * height
+	 */
+	private final int width;
+	private final int height;
 	
 	/**
-	 * @invar | nbColumns > 0
-	 * @invar | nbRows > 0
-	 * @invar | map != null
-	 * @invar | map.length == nbRows * nbColumns
+	 * Stores, for each position in this maze (in row-major order), whether the position is passable.
+	 * 
+	 * @representationObject
 	 */
-	private final int nbColumns;
-	private final int nbRows;
-	/** @representationObject */
-	private final boolean[] map;
-
+	private final boolean[] passable;
+	
 	/**
 	 * Returns the width (i.e. the number of columns) of this maze map.
 	 * 
 	 * @basic
 	 */
-	public int getWidth() { 
-		return nbColumns;
-	}
+	public int getWidth() { return width; }
 	
 	/**
 	 * Returns the height (i.e. the number of rows) of this maze map.
 	 * 
 	 * @basic
 	 */
-	public int getHeight() { 
-		return nbRows;
-	}
+	public int getHeight() { return height; }
 	
 	/**
 	 * Returns whether the square in this maze at row index {@code row} and column index {@code column} is passable.
 	 * The square in the top-left corner of the maze has row index 0 and column index 0.
 	 * 
-	 * @throws IllegalArgumentException if the given {@code rowIndex} is not between zero and {@code nbRows}
-	 * 		| !(0 < rowIndex && rowIndex <= getHeight())
-	 * @throws IllegalArgumentException if the given {@code columnIndex} is not between zero and {@code nbColumns}
-	 * 		| !(0 < columnIndex && columnIndex <= getWidth())
+	 * @throws IllegalArgumentException | rowIndex < 0
+	 * @throws IllegalArgumentException | getHeight() <= rowIndex
+	 * @throws IllegalArgumentException | columnIndex < 0
+	 * @throws IllegalArgumentException | getWidth() <= columnIndex
 	 * 
-	 * @inspects | this
+	 * @basic
 	 */
-	public boolean isPassable(int rowIndex, int columnIndex) { 
-		if (!(0 <= rowIndex && rowIndex <= nbRows)) 
-			throw new IllegalArgumentException("Illegal argument: rowIndex");
-		if (!(0 <= columnIndex && columnIndex <= nbColumns))
-			throw new IllegalArgumentException("Illegal argument: columnIndex");
+	public boolean isPassable(int rowIndex, int columnIndex) {
+		if (rowIndex < 0)
+			throw new IllegalArgumentException("`rowIndex` is negative");
+		if (height <= rowIndex)
+			throw new IllegalArgumentException("`rowIndex` is not less than the height of the maze map");
+		if (columnIndex < 0)
+			throw new IllegalArgumentException("`columnIndex` is negative");
+		if (width <= columnIndex)
+			throw new IllegalArgumentException("`columnIndex` is not less than the width of the maze map");
 		
-		return map[nbColumns * rowIndex + columnIndex];
+		return passable[rowIndex * width + columnIndex];
 	}
 	
 	/**
@@ -68,33 +72,32 @@ public class MazeMap {
 	 * passable positions. The passable positions are given in row-major order (i.e. the first {@code width} elements
 	 * of {@code passable} specify the passability of the maze positions in the first row of the maze). 
 	 * 
-	 * @throws IllegalArgumentException if the given {@code width} is not greater than zero
-	 * 		| !(width > 0)
-	 * @throws IllegalArgumentException if the given {@code height} is not greater than zero
-	 * 		| !(height > 0)
-	 * @throws IllegalArgumentException if the given {@code passable} is null 
-	 * 		| passable == null
-	 * @throws IllegalArgumentException if the length of the given {@code passable} is not equal to width * height 
-	 * 		| !(passable.length == width * height)
+	 * @throws IllegalArgumentException | width < 0
+	 * @throws IllegalArgumentException | height < 0
+	 * @throws IllegalArgumentException | passable == null
+	 * @throws IllegalArgumentException | passable.length != width * height
 	 * 
 	 * @inspects | passable
 	 * 
 	 * @post | getWidth() == width
 	 * @post | getHeight() == height
-	 * @post | IntStream.range(0,passable.length).allMatch(i -> passable[i] == isPassable(i / width, i % width))
+	 * @post | IntStream.range(0, height).allMatch(rowIndex ->
+	 *       |     IntStream.range(0, width).allMatch(columnIndex ->
+	 *       |         isPassable(rowIndex, columnIndex) == passable[rowIndex * width + columnIndex]))
 	 */
 	public MazeMap(int width, int height, boolean[] passable) {
-		if (!(width > 0))
-			throw new IllegalArgumentException("width must be greater than zero");
-		if (!(height > 0))
-			throw new IllegalArgumentException("height must be greater than zero");
+		if (width < 0)
+			throw new IllegalArgumentException("`width` is negative");
+		if (height < 0)
+			throw new IllegalArgumentException("`height` is negative");
 		if (passable == null)
-			throw new IllegalArgumentException("passable may not be null.");
-		if (!(passable.length == width * height))
-			throw new IllegalArgumentException("length of passable must be equal to height * width");
+			throw new IllegalArgumentException("`passable` is null");
+		if (passable.length != width * height)
+			throw new IllegalArgumentException("the length of `passable` is wrong");
 		
-		nbRows = height;
-		nbColumns = width;
-		map = passable.clone();
+		this.width = width;
+		this.height = height;
+		this.passable = passable.clone();
 	}
+	
 }

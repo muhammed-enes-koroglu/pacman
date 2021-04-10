@@ -8,17 +8,25 @@ package pacman;
  * 
  * @immutable
  */
-public class Dot {
+public class Dot extends FoodItem{
 	
 	/**
 	 * @invar | square != null
 	 */
-	private Square square;
+//	private Square square;
+//	private final int size;
 	
 	/**
 	 * @basic
 	 */
-	public Square getSquare() { return square; }
+//	public Square getSquare() { return square; }
+	
+	/**
+	 * @basic
+	 * @post | result == 1
+	 */
+	@Override
+	public int getSize() { return 1; }
 	
 	/**
 	 * @throws IllegalArgumentException | square == null
@@ -26,10 +34,7 @@ public class Dot {
 	 * @post | getSquare() == square
 	 */
 	public Dot(Square square) {
-		if (square == null)
-			throw new IllegalArgumentException("`square` is null");
-		
-		this.square = square;
+		super(square, 1);
 	}
 
 }

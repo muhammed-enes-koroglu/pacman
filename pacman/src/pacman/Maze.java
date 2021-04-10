@@ -44,6 +44,7 @@ public class Maze {
 	}
 	
 	private void removeFoodItemAtIndex(int index) {
+		foodItems[index].eatenByPacMan(ghosts);
 		FoodItem[] newFoodItems = new FoodItem[foodItems.length - 1];
 		System.arraycopy(foodItems, 0, newFoodItems, 0, index);
 		System.arraycopy(foodItems, index + 1, newFoodItems, index, newFoodItems.length - index);

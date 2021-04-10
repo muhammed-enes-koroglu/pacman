@@ -13,4 +13,10 @@ public class PowerPellet extends FoodItem {
 		super(square, 2);
 	}
 
+	@Override
+	public void eatenByPacMan(Ghost[] ghosts) {
+		for (Ghost ghost : ghosts)
+			ghost.pacManAtePowerPellet();
+	}
+
 }

@@ -19,4 +19,6 @@ public abstract class FoodItem {
 		this.size = size;
 	}
 	
+	public abstract void eatenByPacMan(Ghost[] ghosts);
+	
 }
